@@ -69,13 +69,20 @@ rxfail 9 s 1100
 
 # master
 set gyro_lpf1_static_hz = 0
-set dyn_notch_count = 0
-set dyn_notch_q = 500
+set dyn_notch_count = 2
+set dyn_notch_q = 350
+set dyn_notch_min_hz = 120
+set dyn_notch_max_hz = 650
 set gyro_lpf1_dyn_min_hz = 0
+set acc_lpf_hz = 10
 set acc_calibration = -151,-82,36,1
 set min_check = 1000
 set max_check = 2000
+set rc_smoothing_auto_factor = 140
+set rc_smoothing_setpoint_cutoff = 25
+set rc_smoothing_feedforward_cutoff = 25
 set fpv_mix_degrees = 40
+set blackbox_sample_rate = 1/2
 set dshot_bidir = ON
 set motor_pwm_protocol = DSHOT600
 set failsafe_off_delay = 20
@@ -143,30 +150,51 @@ set osd_stat_bitmask = 10647334
 set osd_displayport_device = MSP
 set vtx_low_power_disarm = ON
 set vcd_video_system = HD
+set rpm_filter_fade_range_hz = 70
 
 profile 0
 
 # profile 0
+set dterm_lpf1_dyn_min_hz = 67
+set dterm_lpf1_dyn_max_hz = 135
 set dterm_lpf1_dyn_expo = 10
+set dterm_lpf1_static_hz = 67
+set dterm_lpf2_type = BIQUAD
+set dterm_lpf2_static_hz = 135
 set iterm_relax_cutoff = 10
+set pidsum_limit = 1000
+set pidsum_limit_yaw = 1000
 set throttle_boost = 0
-set p_pitch = 54
-set i_pitch = 130
-set d_pitch = 34
-set f_pitch = 183
-set p_roll = 49
-set i_roll = 118
-set d_roll = 30
-set f_roll = 168
-set p_yaw = 49
-set i_yaw = 118
-set f_yaw = 168
+set p_pitch = 39
+set i_pitch = 97
+set d_pitch = 43
+set f_pitch = 129
+set p_roll = 34
+set i_roll = 79
+set d_roll = 32
+set f_roll = 124
+set p_yaw = 32
+set i_yaw = 88
+set f_yaw = 100
+set angle_level_strength = 100
+set d_min_roll = 29
+set d_min_pitch = 40
+set thrust_linear = 25
+set feedforward_smooth_factor = 65
+set feedforward_jitter_factor = 12
 set dyn_idle_min_rpm = 30
-set simplified_i_gain = 135
-set simplified_pi_gain = 110
-set simplified_dmax_gain = 0
-set simplified_feedforward_gain = 140
+set simplified_pids_mode = OFF
+set simplified_master_multiplier = 90
+set simplified_i_gain = 130
+set simplified_pi_gain = 85
+set simplified_dmax_gain = 50
+set simplified_feedforward_gain = 120
+set simplified_pitch_d_gain = 120
 set simplified_pitch_pi_gain = 105
+set simplified_dterm_filter_multiplier = 90
+set tpa_mode = PD
+set tpa_rate = 35
+set tpa_breakpoint = 1200
 
 profile 1
 
@@ -200,9 +228,17 @@ set tpa_mode = PD
 profile 3
 
 # restore original profile selection
-profile 2
+profile 0
 
 rateprofile 0
+
+# rateprofile 0
+set thr_mid = 25
+set thr_expo = 65
+set roll_expo = 13
+set pitch_expo = 13
+set yaw_expo = 13
+set yaw_srate = 65
 
 rateprofile 1
 
