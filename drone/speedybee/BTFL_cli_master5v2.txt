@@ -1,0 +1,190 @@
+defaults nosave
+
+
+# version
+# Betaflight / STM32F7X2 (S7X2) 4.4.0 Apr 11 2023 / 05:25:16 (4605309d8) MSP API: 1.45
+
+# config: YES
+
+# start the command batch
+batch start
+
+# reset configuration to default settings
+defaults nosave
+
+board_name SPEEDYBEEF7V3
+manufacturer_id SPBE
+mcu_id 002e00313232510838393431
+signature
+
+# name: MASTER5 V2
+
+# feature
+feature -TELEMETRY
+feature LED_STRIP
+
+# serial
+serial 0 8192 115200 57600 0 115200
+serial 1 0 115200 57600 0 115200
+serial 2 64 115200 57600 0 115200
+serial 3 1 115200 57600 0 115200
+
+# beacon
+beacon RX_SET
+
+# led
+led 0 0,0::C:10
+led 1 1,0::C:10
+led 2 2,0::C:10
+led 3 3,0::C:10
+led 4 4,0::C:10
+led 5 5,0::C:10
+led 6 6,0::C:10
+led 7 7,0::C:10
+led 8 8,0::C:10
+led 9 9,0::C:10
+led 10 10,0::C:10
+led 11 11,0::C:10
+led 12 12,0::C:10
+led 13 13,0::C:10
+led 14 14,0::C:10
+led 15 15,0::C:10
+led 16 0,1::C:10
+led 17 1,1::C:10
+led 18 2,1::C:10
+led 19 3,1::C:10
+led 20 4,1::C:10
+led 21 5,1::C:10
+led 22 6,1::C:10
+led 23 7,1::C:10
+led 24 8,1::C:10
+led 25 9,1::C:10
+led 26 10,1::C:10
+led 27 11,1::C:10
+led 28 12,1::C:10
+led 29 13,1::C:10
+led 30 14,1::C:10
+led 31 15,1::C:10
+
+# aux
+aux 0 0 0 1700 2100 0 0
+aux 1 1 2 1300 1700 0 0
+aux 2 2 2 1700 2100 0 0
+aux 3 13 1 1700 2100 0 0
+aux 4 15 3 1700 2100 0 0
+
+# master
+set gyro_lpf1_static_hz = 0
+set dyn_notch_count = 2
+set dyn_notch_q = 350
+set dyn_notch_min_hz = 120
+set dyn_notch_max_hz = 650
+set acc_lpf_hz = 10
+set acc_calibration = 6,-65,17,1
+set rc_smoothing_auto_factor = 140
+set rc_smoothing_setpoint_cutoff = 25
+set rc_smoothing_feedforward_cutoff = 25
+set blackbox_sample_rate = 1/2
+set dshot_bidir = ON
+set motor_pwm_protocol = DSHOT600
+set motor_output_reordering = 3,2,1,0,4,5,6,7
+set small_angle = 180
+set gps_auto_baud = ON
+set gps_set_home_point_once = ON
+set gps_rescue_ground_speed = 1000
+set gps_rescue_pitch_angle_max = 5
+set gps_rescue_min_sats = 5
+set gps_rescue_allow_arming_without_fix = ON
+set osd_rssi_pos = 2112
+set osd_rssi_dbm_pos = 96
+set osd_tim_1_pos = 407
+set osd_tim_2_pos = 2423
+set osd_flymode_pos = 2336
+set osd_throttle_pos = 2368
+set osd_current_pos = 2358
+set osd_craft_name_pos = 2091
+set osd_gps_speed_pos = 170
+set osd_gps_lon_pos = 34
+set osd_gps_lat_pos = 48
+set osd_gps_sats_pos = 66
+set osd_home_dir_pos = 362
+set osd_home_dist_pos = 364
+set osd_altitude_pos = 2391
+set osd_warnings_pos = 14729
+set osd_avg_cell_voltage_pos = 2400
+set osd_displayport_device = MAX7456
+set osd_canvas_width = 30
+set osd_canvas_height = 13
+set debug_mode = GYRO_SCALED
+set rpm_filter_fade_range_hz = 70
+set craft_name = MASTER5 V2
+
+profile 0
+
+profile 1
+
+# profile 1
+set dterm_lpf1_dyn_min_hz = 67
+set dterm_lpf1_dyn_max_hz = 135
+set dterm_lpf1_static_hz = 67
+set dterm_lpf2_type = BIQUAD
+set dterm_lpf2_static_hz = 135
+set pidsum_limit = 1000
+set pidsum_limit_yaw = 1000
+set p_pitch = 39
+set i_pitch = 97
+set d_pitch = 43
+set f_pitch = 129
+set p_roll = 34
+set i_roll = 79
+set d_roll = 32
+set f_roll = 124
+set p_yaw = 32
+set i_yaw = 88
+set f_yaw = 100
+set angle_level_strength = 100
+set d_min_roll = 29
+set d_min_pitch = 40
+set thrust_linear = 25
+set feedforward_smooth_factor = 65
+set feedforward_jitter_factor = 12
+set simplified_pids_mode = OFF
+set simplified_master_multiplier = 90
+set simplified_i_gain = 130
+set simplified_pi_gain = 85
+set simplified_dmax_gain = 50
+set simplified_feedforward_gain = 120
+set simplified_pitch_d_gain = 120
+set simplified_pitch_pi_gain = 105
+set simplified_dterm_filter_multiplier = 90
+set tpa_mode = PD
+set tpa_rate = 35
+set tpa_breakpoint = 1200
+
+profile 2
+
+profile 3
+
+# restore original profile selection
+profile 1
+
+rateprofile 0
+
+# rateprofile 0
+set thr_mid = 25
+set thr_expo = 65
+set roll_expo = 13
+set pitch_expo = 13
+set yaw_expo = 13
+set yaw_srate = 65
+
+rateprofile 1
+
+rateprofile 2
+
+rateprofile 3
+
+# restore original rateprofile selection
+rateprofile 0
+
+# save configuration
