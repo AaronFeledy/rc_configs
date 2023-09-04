@@ -1,4 +1,6 @@
-dump all
+# 
+
+# dump all
 
 # version
 # Betaflight / STM32F7X2 (S7X2) 4.4.2 Jun 13 2023 / 14:44:03 (23d066d08) MSP API: 1.45
@@ -541,7 +543,7 @@ set gyro_overflow_detect = ALL
 set yaw_spin_recovery = AUTO
 set yaw_spin_threshold = 1950
 set gyro_to_use = SECOND
-set dyn_notch_count = 2
+set dyn_notch_count = 0
 set dyn_notch_q = 350
 set dyn_notch_min_hz = 120
 set dyn_notch_max_hz = 650
@@ -553,7 +555,7 @@ set acc_hardware = AUTO
 set acc_lpf_hz = 10
 set acc_trim_pitch = 0
 set acc_trim_roll = 0
-set acc_calibration = -151,-82,36,1
+set acc_calibration = -9,-84,35,1
 set align_mag = DEFAULT
 set mag_align_roll = 0
 set mag_align_pitch = 0
@@ -649,7 +651,7 @@ set bat_capacity = 1300
 set vbat_max_cell_voltage = 420
 set vbat_full_cell_voltage = 410
 set vbat_min_cell_voltage = 330
-set vbat_warning_cell_voltage = 345
+set vbat_warning_cell_voltage = 350
 set vbat_hysteresis = 1
 set current_meter = ADC
 set battery_meter = ADC
@@ -1442,8 +1444,8 @@ rateprofile 0
 
 # rateprofile 0
 set rateprofile_name = -
-set thr_mid = 25
-set thr_expo = 65
+set thr_mid = 35
+set thr_expo = 45
 set rates_type = ACTUAL
 set quickrates_rc_expo = OFF
 set roll_rc_rate = 7
