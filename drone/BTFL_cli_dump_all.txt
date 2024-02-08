@@ -283,7 +283,7 @@ beeper RC_SMOOTHING_INIT_FAIL
 
 # beacon
 beacon RX_LOST
-beacon -RX_SET
+beacon RX_SET
 
 # map
 map AETR1234
@@ -583,7 +583,7 @@ set rc_smoothing_setpoint_cutoff = 25
 set rc_smoothing_feedforward_cutoff = 25
 set rc_smoothing_throttle_cutoff = 0
 set rc_smoothing_debug_axis = ROLL
-set fpv_mix_degrees = 40
+set fpv_mix_degrees = 30
 set max_aux_channels = 14
 set serialrx_provider = CRSF
 set serialrx_inverted = OFF
