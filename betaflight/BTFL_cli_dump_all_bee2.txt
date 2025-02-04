@@ -1,7 +1,6 @@
 # version
-# Betaflight / STM32F7X2 (S7X2) 4.4.3 Dec  2 2023 / 22:07:50 (738127e7e) MSP API: 1.45
-
-# config: YES
+# Betaflight / STM32F7X2 (S7X2) 4.5.1 Feb  4 2025 / 00:20:50 (77d01ba3b) MSP API: 1.46
+# config rev: 760a18f
 
 # start the command batch
 batch start
@@ -9,9 +8,9 @@ batch start
 board_name SPEEDYBEEF7V3
 manufacturer_id SPBE
 mcu_id 003600204241500c20373136
-signature
+signature 
 
-# name: -
+# name: Bee2
 
 # resources
 resource BEEPER 1 C13
@@ -42,8 +41,6 @@ resource SERIAL_TX 7 NONE
 resource SERIAL_TX 8 NONE
 resource SERIAL_TX 9 NONE
 resource SERIAL_TX 10 NONE
-resource SERIAL_TX 11 NONE
-resource SERIAL_TX 12 NONE
 resource SERIAL_RX 1 A10
 resource SERIAL_RX 2 A03
 resource SERIAL_RX 3 B11
@@ -54,8 +51,10 @@ resource SERIAL_RX 7 NONE
 resource SERIAL_RX 8 NONE
 resource SERIAL_RX 9 NONE
 resource SERIAL_RX 10 NONE
-resource SERIAL_RX 11 NONE
-resource SERIAL_RX 12 NONE
+resource SOFTSERIAL_TX 1 NONE
+resource SOFTSERIAL_TX 2 NONE
+resource SOFTSERIAL_RX 1 NONE
+resource SOFTSERIAL_RX 2 NONE
 resource I2C_SCL 1 B08
 resource I2C_SCL 2 NONE
 resource I2C_SCL 3 NONE
@@ -71,14 +70,15 @@ resource SPI_SCK 1 A05
 resource SPI_SCK 2 B13
 resource SPI_SCK 3 C10
 resource SPI_SCK 4 NONE
-resource SPI_MISO 1 A06
-resource SPI_MISO 2 B14
-resource SPI_MISO 3 C11
-resource SPI_MISO 4 NONE
-resource SPI_MOSI 1 A07
-resource SPI_MOSI 2 B15
-resource SPI_MOSI 3 C12
-resource SPI_MOSI 4 NONE
+resource SPI_SDI 1 A06
+resource SPI_SDI 2 B14
+resource SPI_SDI 3 C11
+resource SPI_SDI 4 NONE
+resource SPI_SDO 1 A07
+resource SPI_SDO 2 B15
+resource SPI_SDO 3 C12
+resource SPI_SDO 4 NONE
+resource ESCSERIAL 1 NONE
 resource CAMERA_CONTROL 1 A00
 resource ADC_BATT 1 C02
 resource ADC_RSSI 1 C00
@@ -96,7 +96,6 @@ resource PINIO 2 NONE
 resource PINIO 3 NONE
 resource PINIO 4 NONE
 resource USB_MSC_PIN 1 NONE
-resource OSD_CS 1 B12
 resource GYRO_EXTI 1 C04
 resource GYRO_EXTI 2 C03
 resource GYRO_CS 1 B02
@@ -136,15 +135,15 @@ timer A00 AF2
 # pin A00: TIM5 CH1 (AF2)
 
 # dma
-dma SPI_MOSI 1 NONE
-dma SPI_MOSI 2 NONE
-dma SPI_MOSI 3 0
-# SPI_MOSI 3: DMA1 Stream 5 Channel 0
-dma SPI_MOSI 4 NONE
-dma SPI_MISO 1 NONE
-dma SPI_MISO 2 NONE
-dma SPI_MISO 3 NONE
-dma SPI_MISO 4 NONE
+dma SPI_SDO 1 NONE
+dma SPI_SDO 2 NONE
+dma SPI_SDO 3 0
+# SPI_SDO 3: DMA1 Stream 5 Channel 0
+dma SPI_SDO 4 NONE
+dma SPI_SDI 1 NONE
+dma SPI_SDI 2 NONE
+dma SPI_SDI 3 NONE
+dma SPI_SDI 4 NONE
 dma SPI_TX 1 NONE
 dma SPI_TX 2 NONE
 dma SPI_TX 3 0
@@ -166,6 +165,9 @@ dma UART_TX 5 NONE
 dma UART_TX 6 NONE
 dma UART_TX 7 NONE
 dma UART_TX 8 NONE
+dma UART_TX 9 NONE
+dma UART_TX 10 NONE
+dma UART_TX 11 NONE
 dma UART_RX 1 NONE
 dma UART_RX 2 NONE
 dma UART_RX 3 NONE
@@ -174,6 +176,9 @@ dma UART_RX 5 NONE
 dma UART_RX 6 NONE
 dma UART_RX 7 NONE
 dma UART_RX 8 NONE
+dma UART_RX 9 NONE
+dma UART_RX 10 NONE
+dma UART_RX 11 NONE
 dma pin A15 0
 # pin A15: DMA1 Stream 5 Channel 3
 dma pin B03 0
@@ -593,6 +598,7 @@ set rx_min_usec = 885
 set rx_max_usec = 2115
 set serialrx_halfduplex = OFF
 set msp_override_channels_mask = 0
+set msp_override_failsafe = OFF
 set adc_device = 1
 set adc_vrefint_calibration = 0
 set adc_tempsensor_calibration30 = 0
@@ -607,15 +613,18 @@ set blackbox_disable_mag = OFF
 set blackbox_disable_alt = OFF
 set blackbox_disable_rssi = OFF
 set blackbox_disable_gyro = OFF
+set blackbox_disable_gyrounfilt = OFF
 set blackbox_disable_acc = OFF
 set blackbox_disable_debug = OFF
 set blackbox_disable_motors = OFF
+set blackbox_disable_rpm = OFF
 set blackbox_disable_gps = OFF
 set blackbox_mode = NORMAL
 set blackbox_high_resolution = OFF
 set min_throttle = 1070
 set max_throttle = 2000
 set min_command = 1000
+set motor_kv = 1900
 set dshot_idle_value = 550
 set dshot_burst = ON
 set dshot_bidir = ON
@@ -677,6 +686,11 @@ set yaw_motors_reversed = OFF
 set mixer_type = LEGACY
 set crashflip_motor_percent = 0
 set crashflip_expo = 35
+set rpm_limit = OFF
+set rpm_limit_p = 25
+set rpm_limit_i = 10
+set rpm_limit_d = 8
+set rpm_limit_value = 18000
 set 3d_deadband_low = 1406
 set 3d_deadband_high = 1514
 set 3d_neutral = 1460
@@ -695,17 +709,22 @@ set imu_dcm_kp = 2500
 set imu_dcm_ki = 0
 set small_angle = 180
 set imu_process_denom = 2
+set mag_declination = 0
 set auto_disarm_delay = 5
 set gyro_cal_on_first_arm = OFF
 set gps_provider = UBLOX
 set gps_sbas_mode = NONE
 set gps_auto_config = ON
 set gps_auto_baud = OFF
-set gps_ublox_mode = AIRBORNE
+set gps_ublox_acquire_model = STATIONARY
+set gps_ublox_flight_model = AIRBORNE_4G
+set gps_update_rate_hz = 10
+set gps_ublox_utc_standard = AUTO
 set gps_ublox_use_galileo = OFF
 set gps_set_home_point_once = OFF
 set gps_use_3d_speed = OFF
 set gps_sbas_integrity = OFF
+set gps_nmea_custom_commands = -
 set gps_rescue_min_start_dist = 15
 set gps_rescue_alt_mode = MAX_ALT
 set gps_rescue_initial_climb = 10
@@ -715,6 +734,7 @@ set gps_rescue_ground_speed = 750
 set gps_rescue_max_angle = 45
 set gps_rescue_roll_mix = 150
 set gps_rescue_pitch_cutoff = 75
+set gps_rescue_imu_yaw_gain = 10
 set gps_rescue_descent_dist = 20
 set gps_rescue_descend_rate = 150
 set gps_rescue_landing_alt = 4
@@ -778,6 +798,8 @@ set ledstrip_beacon_period_ms = 100
 set ledstrip_beacon_percent = 50
 set ledstrip_beacon_armed_only = OFF
 set ledstrip_brightness = 100
+set ledstrip_rainbow_delta = 0
+set ledstrip_rainbow_freq = 120
 set sdcard_detect_inverted = OFF
 set sdcard_mode = SPI
 set sdcard_spi_bus = 3
@@ -802,6 +824,8 @@ set osd_ah_max_rol = 40
 set osd_ah_invert = OFF
 set osd_logo_on_arming = OFF
 set osd_logo_on_arming_duration = 5
+set osd_use_quick_menu = ON
+set osd_show_spec_prearm = ON
 set osd_tim1 = 1795
 set osd_tim2 = 1793
 set osd_vbat_pos = 1250
@@ -851,6 +875,7 @@ set osd_disarmed_pos = 234
 set osd_nheading_pos = 234
 set osd_up_down_reference_pos = 205
 set osd_ready_mode_pos = 2264
+set osd_nvario_pos = 341
 set osd_esc_tmp_pos = 3144
 set osd_esc_rpm_pos = 234
 set osd_esc_rpm_freq_pos = 234
@@ -886,7 +911,7 @@ set osd_profile = 1
 set osd_profile_1_name = -
 set osd_profile_2_name = -
 set osd_profile_3_name = -
-set osd_gps_sats_show_hdop = OFF
+set osd_gps_sats_show_pdop = OFF
 set osd_displayport_device = MSP
 set osd_rcchannels = -1,-1,-1,-1
 set osd_camera_frame_width = 24
@@ -915,20 +940,10 @@ set vtx_freq = 0
 set vtx_pit_mode_freq = 0
 set vtx_halfduplex = ON
 set vcd_video_system = HD
-set vcd_h_offset = 0
-set vcd_v_offset = 0
-set max7456_clock = NOMINAL
-set max7456_spi_bus = 2
-set max7456_preinit_opu = OFF
 set displayport_msp_col_adjust = 0
 set displayport_msp_row_adjust = 0
 set displayport_msp_fonts = 0,0,0,0
 set displayport_msp_use_device_blink = OFF
-set displayport_max7456_col_adjust = 0
-set displayport_max7456_row_adjust = 0
-set displayport_max7456_inv = OFF
-set displayport_max7456_blk = 0
-set displayport_max7456_wht = 2
 set esc_sensor_halfduplex = OFF
 set esc_sensor_current_offset = 0
 set led_inversion = 0
@@ -973,9 +988,11 @@ set i2c3_clockspeed_khz = 800
 set mco2_on_pc9 = OFF
 set scheduler_relax_rx = 25
 set scheduler_relax_osd = 25
+set cpu_late_limit_permille = 10
 set serialmsp_halfduplex = OFF
 set timezone_offset_minutes = 0
 set rpm_filter_harmonics = 3
+set rpm_filter_weights = 100,100,100
 set rpm_filter_q = 500
 set rpm_filter_min_hz = 100
 set rpm_filter_fade_range_hz = 70
@@ -985,7 +1002,7 @@ set stats_total_flights = 0
 set stats_total_time_s = 0
 set stats_total_dist_m = 0
 set stats_mah_used = 0
-set craft_name = -
+set craft_name = Bee2
 set pilot_name = -
 set altitude_source = DEFAULT
 set altitude_prefer_baro = 100
@@ -1052,12 +1069,16 @@ set p_yaw = 32
 set i_yaw = 88
 set d_yaw = 0
 set f_yaw = 100
-set angle_level_strength = 100
+set angle_p_gain = 50
+set angle_feedforward = 50
+set angle_feedforward_smoothing_ms = 80
+set angle_limit = 60
+set angle_earth_ref = 100
 set horizon_level_strength = 50
-set horizon_transition = 75
-set level_limit = 55
-set horizon_tilt_effect = 75
-set horizon_tilt_expert_mode = OFF
+set horizon_limit_sticks = 75
+set horizon_limit_degrees = 135
+set horizon_ignore_sticks = OFF
+set horizon_delay_ms = 500
 set abs_control_gain = 0
 set abs_control_limit = 90
 set abs_control_error_limit = 20
@@ -1089,6 +1110,7 @@ set dyn_idle_p_gain = 50
 set dyn_idle_i_gain = 50
 set dyn_idle_d_gain = 50
 set dyn_idle_max_increase = 150
+set dyn_idle_start_increase = 50
 set level_race_mode = OFF
 set simplified_pids_mode = RP
 set simplified_master_multiplier = 110
@@ -1104,6 +1126,12 @@ set simplified_dterm_filter_multiplier = 90
 set tpa_mode = PD
 set tpa_rate = 35
 set tpa_breakpoint = 1200
+set tpa_low_rate = 20
+set tpa_low_breakpoint = 1050
+set tpa_low_always = OFF
+set ez_landing_threshold = 25
+set ez_landing_limit = 15
+set ez_landing_speed = 50
 
 profile 1
 
@@ -1161,12 +1189,16 @@ set p_yaw = 45
 set i_yaw = 80
 set d_yaw = 0
 set f_yaw = 120
-set angle_level_strength = 50
+set angle_p_gain = 50
+set angle_feedforward = 50
+set angle_feedforward_smoothing_ms = 80
+set angle_limit = 60
+set angle_earth_ref = 100
 set horizon_level_strength = 50
-set horizon_transition = 75
-set level_limit = 55
-set horizon_tilt_effect = 75
-set horizon_tilt_expert_mode = OFF
+set horizon_limit_sticks = 75
+set horizon_limit_degrees = 135
+set horizon_ignore_sticks = OFF
+set horizon_delay_ms = 500
 set abs_control_gain = 0
 set abs_control_limit = 90
 set abs_control_error_limit = 20
@@ -1198,6 +1230,7 @@ set dyn_idle_p_gain = 50
 set dyn_idle_i_gain = 50
 set dyn_idle_d_gain = 50
 set dyn_idle_max_increase = 150
+set dyn_idle_start_increase = 50
 set level_race_mode = OFF
 set simplified_pids_mode = RPY
 set simplified_master_multiplier = 100
@@ -1213,6 +1246,12 @@ set simplified_dterm_filter_multiplier = 100
 set tpa_mode = D
 set tpa_rate = 65
 set tpa_breakpoint = 1350
+set tpa_low_rate = 20
+set tpa_low_breakpoint = 1050
+set tpa_low_always = OFF
+set ez_landing_threshold = 25
+set ez_landing_limit = 15
+set ez_landing_speed = 50
 
 profile 2
 
@@ -1270,12 +1309,16 @@ set p_yaw = 49
 set i_yaw = 118
 set d_yaw = 0
 set f_yaw = 168
-set angle_level_strength = 50
+set angle_p_gain = 50
+set angle_feedforward = 50
+set angle_feedforward_smoothing_ms = 80
+set angle_limit = 60
+set angle_earth_ref = 100
 set horizon_level_strength = 50
-set horizon_transition = 75
-set level_limit = 55
-set horizon_tilt_effect = 75
-set horizon_tilt_expert_mode = OFF
+set horizon_limit_sticks = 75
+set horizon_limit_degrees = 135
+set horizon_ignore_sticks = OFF
+set horizon_delay_ms = 500
 set abs_control_gain = 0
 set abs_control_limit = 90
 set abs_control_error_limit = 20
@@ -1307,6 +1350,7 @@ set dyn_idle_p_gain = 50
 set dyn_idle_i_gain = 50
 set dyn_idle_d_gain = 50
 set dyn_idle_max_increase = 150
+set dyn_idle_start_increase = 50
 set level_race_mode = OFF
 set simplified_pids_mode = RPY
 set simplified_master_multiplier = 100
@@ -1322,6 +1366,12 @@ set simplified_dterm_filter_multiplier = 100
 set tpa_mode = PD
 set tpa_rate = 65
 set tpa_breakpoint = 1350
+set tpa_low_rate = 20
+set tpa_low_breakpoint = 1050
+set tpa_low_always = OFF
+set ez_landing_threshold = 25
+set ez_landing_limit = 15
+set ez_landing_speed = 50
 
 profile 3
 
@@ -1379,12 +1429,16 @@ set p_yaw = 45
 set i_yaw = 80
 set d_yaw = 0
 set f_yaw = 120
-set angle_level_strength = 50
+set angle_p_gain = 50
+set angle_feedforward = 50
+set angle_feedforward_smoothing_ms = 80
+set angle_limit = 60
+set angle_earth_ref = 100
 set horizon_level_strength = 50
-set horizon_transition = 75
-set level_limit = 55
-set horizon_tilt_effect = 75
-set horizon_tilt_expert_mode = OFF
+set horizon_limit_sticks = 75
+set horizon_limit_degrees = 135
+set horizon_ignore_sticks = OFF
+set horizon_delay_ms = 500
 set abs_control_gain = 0
 set abs_control_limit = 90
 set abs_control_error_limit = 20
@@ -1416,6 +1470,7 @@ set dyn_idle_p_gain = 50
 set dyn_idle_i_gain = 50
 set dyn_idle_d_gain = 50
 set dyn_idle_max_increase = 150
+set dyn_idle_start_increase = 50
 set level_race_mode = OFF
 set simplified_pids_mode = RPY
 set simplified_master_multiplier = 100
@@ -1431,6 +1486,12 @@ set simplified_dterm_filter_multiplier = 100
 set tpa_mode = D
 set tpa_rate = 65
 set tpa_breakpoint = 1350
+set tpa_low_rate = 20
+set tpa_low_breakpoint = 1050
+set tpa_low_always = OFF
+set ez_landing_threshold = 25
+set ez_landing_limit = 15
+set ez_landing_speed = 50
 
 # restore original profile selection
 profile 0
@@ -1457,8 +1518,6 @@ set throttle_limit_percent = 100
 set roll_rate_limit = 1998
 set pitch_rate_limit = 1998
 set yaw_rate_limit = 1998
-set roll_level_expo = 0
-set pitch_level_expo = 0
 
 rateprofile 1
 
@@ -1482,8 +1541,6 @@ set throttle_limit_percent = 100
 set roll_rate_limit = 1998
 set pitch_rate_limit = 1998
 set yaw_rate_limit = 1998
-set roll_level_expo = 0
-set pitch_level_expo = 0
 
 rateprofile 2
 
@@ -1507,8 +1564,6 @@ set throttle_limit_percent = 100
 set roll_rate_limit = 1998
 set pitch_rate_limit = 1998
 set yaw_rate_limit = 1998
-set roll_level_expo = 0
-set pitch_level_expo = 0
 
 rateprofile 3
 
@@ -1532,8 +1587,6 @@ set throttle_limit_percent = 100
 set roll_rate_limit = 1998
 set pitch_rate_limit = 1998
 set yaw_rate_limit = 1998
-set roll_level_expo = 0
-set pitch_level_expo = 0
 
 # restore original rateprofile selection
 rateprofile 0
